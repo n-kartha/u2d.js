@@ -6,17 +6,9 @@ Here are the ground rules:
 2. Keep track of [which branch you commit to](#branches).
 
 ## Style guide
-The style guide here is really simple. I recommend [Visual Studio Code](https://code.visualstudio.com). extension. Set the indentation to `Spaces: 2` and set the `formatOnSave` option to `true`. Here's how to do that:
+The style guide here is really simple. I recommend [Visual Studio Code](https://code.visualstudio.com) with the [Beautify](https://github.com/HookyQR/VSCodeBeautify) extension.
 
-1. Press `Ctrl` + `Shift` + `P` to open the command palette.
-2. Search and select `Preferences: Open Workspace Settings`.
-3. Add the following lines to it:
-```json
-  "editor.tabSize": 2,
-  "editor.formatOnSave": true,
-```
-
-And it should automatically format your code to fit with our style!
+Set the indentation to `Spaces: 2` and make sure that the `.jsbeautifyrc` file is in your workspace root. It should automatically format your code to fit with our style.
 
 ## Branches
 Currently, we have 3 branches:
