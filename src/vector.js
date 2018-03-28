@@ -1,14 +1,14 @@
-class Vector(){
+class Vector{
     constructor(x,y){
         this.x = x;
         this.y = y;
     }
 
     add(n){
-        if(n typeof Number){
+        if(n instanceof Number){
             this.x += n;
             this.y += n;
-        }else if(n typeof Vector){
+        }else if(n instanceof Vector){
             this.x += n.x;
             this.y += n.y;
         }
