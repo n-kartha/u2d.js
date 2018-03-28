@@ -10,6 +10,13 @@ The style guide here is really simple. I recommend [Visual Studio Code](https://
 
 Set the indentation to `Spaces: 2` and make sure that the `.jsbeautifyrc` file is in your workspace root. It should automatically format your code to fit with our style.
 
+### Additional styles
+Use [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) if required and use single quotes for strings.
+
+All `import`s should be declared at the top of each file.
+
+Error messages should be declared in a `const errorMessages` variable immediately after the `import` statements.
+
 ## Branches
 Currently, we have 3 branches:
 
