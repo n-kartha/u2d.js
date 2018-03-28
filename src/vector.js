@@ -13,4 +13,10 @@ export default class Vector{
             this.y += n.y;
         }
     }
+
+    static add(a, b){
+        if(a instanceof Vector && b instanceof Vector){
+            return new Vector(a.x + b.x, a.y + b.y);
+        }
+    }
 }
