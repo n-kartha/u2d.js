@@ -1,7 +1,7 @@
-import Vector from './vector';
 import errorMessages from './errors';
 import {
-  private
+  private,
+  Vector
 } from './main';
 
 /**
