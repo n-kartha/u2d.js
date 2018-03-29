@@ -56,4 +56,18 @@ class Vector {
       throw errorMessages.invalidArguments(['Vector', 'Vector'], arguments);
     }
   }
+
+  /**
+   * Scales (multiplies) a vector by a number
+   * @param {Vector} vec Vector to scale
+   * @param {number} num Amount to scale by
+   * @returns {Vector} vec * num
+   */
+  static scale(vec, num) {
+    if (a instanceof Vector && typeof b === "number") {
+      return new Vector(vec.x * num, vec.y * num);
+    } else {
+      throw errorMessages.invalidArguments(['Vector', 'number'], arguments);
+    }
+  }
 }
