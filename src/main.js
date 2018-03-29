@@ -3,7 +3,7 @@ import Vector from './vector';
 /**
  * Namespace for all u2d functions and variables
  */
-let U2D = {
+const U2D = {
   /**
    * `Symbol` to be used for private variables in classes
    */
