@@ -11,4 +11,5 @@ let U2D = {
   Vector
 };
 
+window.U2D = U2D;
 export default U2D;
