@@ -3,12 +3,10 @@
   "version": "0.0.0",
   "description": "Yet another game library written in JavaScript (WIP)",
   "main": "index.js",
-
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/n-kartha/u2d.js.git"
