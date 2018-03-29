@@ -79,4 +79,14 @@ class Vector {
       throw errorMessages.invalidArguments(['Vector', 'number'], arguments);
     }
   }
+
+  /**
+   * Checks whether 2 Vectors are equal (mostly used for testing)
+   * @param {Vector} a LHS
+   * @param {Vector} b RHS
+   * @returns {boolean} a is equal to b
+   */
+  static equals(a, b) {
+    return a.x === b.x && a.y === b.y;
+  }
 }
