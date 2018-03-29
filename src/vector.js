@@ -90,3 +90,5 @@ class Vector {
     return a.x === b.x && a.y === b.y;
   }
 }
+
+export default Vector;
