@@ -1,4 +1,14 @@
-import GameObject from "./gameobject";
+import Vector from './vector'
 
-let u2d = {};
-export default u2d;
+/**
+ * Namespace for all u2d functions and variables
+ */
+let U2D = {
+  /**
+   * `Symbol` to be used for private variables in classes
+   */
+  private: Symbol('Universe2D private symbol'),
+  Vector
+};
+
+export default U2D;
