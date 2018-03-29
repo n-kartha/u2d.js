@@ -1,4 +1,4 @@
-import Vector from './vector'
+import Vector from './vector';
 
 /**
  * Namespace for all u2d functions and variables
