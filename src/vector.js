@@ -4,9 +4,18 @@ import errorMessages from './errors';
  * Class to hold 2-dimensional vectors
  */
 class Vector {
+  /**
+   * Creates a new Vector
+   * @param {number} x X co-ordinate
+   * @param {number} y Y co-ordinate
+   */
   constructor(x, y) {
-    this.x = x;
-    this.y = y;
+    if (typeof x === "number" && typeof y === "number") {
+      this.x = x;
+      this.y = y;
+    } else {
+      throw errorMessages.invalidArguments(['number', 'number'], arguments);
+    }
   }
 
   // add(n) {
