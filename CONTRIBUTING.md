@@ -8,7 +8,20 @@ Here are the ground rules:
 ## Style guide
 The style guide here is really simple. I recommend [Visual Studio Code](https://code.visualstudio.com) with the [Beautify](https://github.com/HookyQR/VSCodeBeautify) extension.
 
-Set the indentation to `Spaces: 2` and make sure that the `.jsbeautifyrc` file is in your workspace root. It should automatically format your code to fit with our style.
+Set the indentation to `Spaces: 2` and make sure that the `.jsbeautifyrc` file is in your workspace root. It should automatically format your code to fit with our style. For convenience, make sure that these 2 lines are present in your User Settings (`Ctrl` + `,`).
+
+```json
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+```
+
+### Other rules
+Installing Beautify will format your code to make it look prettier. Since we need to maintain consistency in other stuff as well, follow these rules:
+
+1. `import` statements should be mentioned at the top of each file.
+1. `export`s should be mentioned at the bottom of each file.
+1. Do not invent your own error messages. Use existing ones in `src/errors.js`, or create new ones if you don't find them useful.
+1. Write meaningful commit messages. Don't leave it blank. If you've fixed a bug, give a reference to the issue that you fixed. If you're adding a new feature, write down a brief description.
 
 ## Branches
 Currently, we have 3 branches:
