@@ -70,7 +70,7 @@ class Vector {
    * Scales (multiplies) a vector by a number
    * @param {Vector} vec Vector to scale
    * @param {number} num Amount to scale by
-   * @returns {Vector} vec * num
+   * @returns {Vector} `vec` scaled by `num`
    */
   static scale(vec, num) {
     if (a instanceof Vector && typeof b === "number") {
@@ -84,7 +84,7 @@ class Vector {
    * Checks whether 2 Vectors are equal (mostly used for testing)
    * @param {Vector} a LHS
    * @param {Vector} b RHS
-   * @returns {boolean} a is equal to b
+   * @returns {boolean} Boolean indicating whether a is equal to b
    */
   static equals(a, b) {
     return a.x === b.x && a.y === b.y;
