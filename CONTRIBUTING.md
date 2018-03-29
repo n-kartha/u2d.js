@@ -22,6 +22,21 @@ Installing Beautify will format your code to make it look prettier. Since we nee
 1. `export`s should be mentioned at the bottom of each file.
 1. Do not invent your own error messages. Use existing ones in `src/errors.js`, or create new ones if you don't find them useful.
 1. Write meaningful commit messages. Don't leave it blank. If you've fixed a bug, give a reference to the issue that you fixed. If you're adding a new feature, write down a brief description.
+1. Use JSDoc to document every single thing that you're adding. What you intended for a function or variable need not be what everyone else understands. As an added bonus, the JSDoc comments can directly be used for wiki articles.
+
+By the way, here's an example for a JSDoc comment:
+
+```javascript
+/**
+ * Adds 2 numbers
+ * @param {number} a First number
+ * @param {number} b Second number
+ * @returns {number} Sum of a and b
+ */
+function add(a, b) {
+  return a + b;
+}
+```
 
 ## Branches
 Currently, we have 3 branches:
