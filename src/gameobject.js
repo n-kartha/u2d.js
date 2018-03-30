@@ -1,6 +1,6 @@
 import errorMessages from './errors';
 import {
-  private,
+  priv,
   Vector
 } from './main';
 
@@ -14,7 +14,7 @@ class GameObject {
    */
   constructor(pos) {
     if (pos instanceof Vector) {
-      this[private].pos = pos;
+      this[priv].pos = pos;
     } else {
       throw errorMessages.invalidArguments(['Vector'], arguments);
     }
@@ -27,9 +27,9 @@ class GameObject {
    */
   x(to) {
     if (typeof to !== 'number') {
-      return this[private].pos.x;
+      return this[priv].pos.x;
     } else {
-      this[private].pos.x = to;
+      this[priv].pos.x = to;
     }
   }
 
@@ -40,9 +40,9 @@ class GameObject {
    */
   y(to) {
     if (typeof to !== 'number') {
-      return this[private].pos.y;
+      return this[priv].pos.y;
     } else {
-      this[private].pos.y = to;
+      this[priv].pos.y = to;
     }
   }
 

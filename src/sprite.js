@@ -2,7 +2,7 @@ import GameObject from './gameobject';
 import errorMessages from './errors';
 
 import {
-  private,
+  priv,
   Vector
 } from './main';
 
@@ -30,20 +30,20 @@ class Sprite extends GameObject {
   constructor(pos, spritesheet, spriteSettings) {
     if (pos instanceof Vector && spritesheet instanceof Image) {
       super(pos);
-      this[private].image = spritesheet;
+      this[priv].image = spritesheet;
 
       if (spriteSettings) {
         if (spritesettings.dimensions instanceof Vector &&
           typeof spritesettings.fps === 'number') {
 
-          this[private].frameDim = spriteSettings.dimensions;
-          this[private].fps = spriteSettings.fps;
+          this[priv].frameDim = spriteSettings.dimensions;
+          this[priv].fps = spriteSettings.fps;
 
           let props = ['padding', 'startFrame', 'endFrame'];
 
           for (let prop of props) {
             if (typeof spriteSettings[prop] === 'number') {
-              this[private][prop] = spriteSettings[prop];
+              this[priv][prop] = spriteSettings[prop];
             }
           }
         }

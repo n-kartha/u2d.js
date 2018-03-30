@@ -7,7 +7,7 @@ const U2D = {
   /**
    * `Symbol` to be used for private variables in classes
    */
-  private: Symbol('Universe2D private symbol'),
+  priv: Symbol('Universe2D private symbol'),
   Vector
 };
 
