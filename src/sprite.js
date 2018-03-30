@@ -7,7 +7,7 @@ import {
 } from './main';
 
 /**
- * Properties for manipulating sprites
+ * Object to be passed as arguments to the <code>constructor</code> of <code>Sprite</code>
  * @typedef SpriteSettings
  * @type {Object}
  * @property {Vector} dimensions Heigth and width of each sprite
