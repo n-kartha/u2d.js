@@ -26,7 +26,7 @@ class GameObject {
    * @returns {number|undefined} Current X co-ordinate if `to` is not a number
    */
   x(to) {
-    if (typeof to !== "number") {
+    if (typeof to !== 'number') {
       return this[private].pos.x;
     } else {
       this[private].pos.x = to;
@@ -39,11 +39,18 @@ class GameObject {
    * @returns {number|undefined} Current Y co-ordinate if `to` is not a number
    */
   y(to) {
-    if (typeof to !== "number") {
+    if (typeof to !== 'number') {
       return this[private].pos.y;
     } else {
       this[private].pos.y = to;
     }
+  }
+
+  /**
+   * Must be replaced when inherited by a derived class
+   */
+  draw() {
+    throw errorMessages.notImplemented();
   }
 }
 
