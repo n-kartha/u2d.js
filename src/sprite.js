@@ -34,7 +34,7 @@ class Sprite extends GameObject {
 
       if (spriteSettings) {
         if (spritesettings.dimensions instanceof Vector &&
-          typeof spritesettings.fps === "number") {
+          typeof spritesettings.fps === 'number') {
 
           this[private].frameDim = spriteSettings.dimensions;
           this[private].fps = spriteSettings.fps;
@@ -42,7 +42,7 @@ class Sprite extends GameObject {
           let props = ['padding', 'startFrame', 'endFrame'];
 
           for (let prop of props) {
-            if (typeof spriteSettings[prop] === "number") {
+            if (typeof spriteSettings[prop] === 'number') {
               this[private][prop] = spriteSettings[prop];
             }
           }

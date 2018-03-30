@@ -10,7 +10,7 @@ class Vector {
    * @param {number} y Y co-ordinate
    */
   constructor(x, y) {
-    if (typeof x === "number" && typeof y === "number") {
+    if (typeof x === 'number' && typeof y === 'number') {
       this.x = x;
       this.y = y;
     } else {
@@ -19,7 +19,7 @@ class Vector {
   }
 
   // add(n) {
-  //   if (typeof n === "number") {
+  //   if (typeof n === 'number') {
   //     this.x += n;
   //     this.y += n;
   //   } else if (n instanceof Vector) {
@@ -43,7 +43,7 @@ class Vector {
   }
 
   // subtract(n) {
-  //   if (typeof n === "number") {
+  //   if (typeof n === 'number') {
   //     this.x -= n;
   //     this.y -= n;
   //   } else if (n instanceof Vector) {
@@ -73,7 +73,7 @@ class Vector {
    * @returns {Vector} `vec` scaled by `num`
    */
   static scale(vec, num) {
-    if (a instanceof Vector && typeof b === "number") {
+    if (a instanceof Vector && typeof b === 'number') {
       return new Vector(vec.x * num, vec.y * num);
     } else {
       throw errorMessages.invalidArguments(['Vector', 'number'], arguments);
