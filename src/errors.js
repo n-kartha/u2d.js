@@ -3,7 +3,7 @@
  * @namespace
  * @private
  */
-const errorMessages = {
+const errors = {
   /**
    * Thrown when the arguments of a function are not the same as those required
    * @param {string[]} expected Expected argument types
@@ -25,4 +25,4 @@ const errorMessages = {
   }
 };
 
-export default errorMessages;
+export default errors;
