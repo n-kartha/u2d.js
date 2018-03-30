@@ -5,7 +5,7 @@ import Vector from './vector';
  */
 const U2D = {
   /**
-   * `Symbol` to be used for private variables in classes
+   * <code>Symbol</code> to be used for private variables in classes
    */
   priv: Symbol('Universe2D private symbol'),
   Vector
