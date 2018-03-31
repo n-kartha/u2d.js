@@ -1,4 +1,4 @@
-import errorMessages from './errors';
+import errors from './errors';
 
 /**
  * Class to hold 2-dimensional vectors
@@ -14,7 +14,7 @@ class Vector {
       this.x = x;
       this.y = y;
     } else {
-      throw errorMessages.invalidArguments(['number', 'number'], arguments);
+      throw errors.invalidArguments(['number', 'number'], arguments);
     }
   }
 
@@ -38,7 +38,7 @@ class Vector {
     if (a instanceof Vector && b instanceof Vector) {
       return new Vector(a.x + b.x, a.y + b.y);
     } else {
-      throw errorMessages.invalidArguments(['Vector', 'Vector'], arguments);
+      throw errors.invalidArguments(['Vector', 'Vector'], arguments);
     }
   }
 
@@ -62,7 +62,7 @@ class Vector {
     if (a instanceof Vector && b instanceof Vector) {
       return new Vector(a.x - b.x, a.y - b.y);
     } else {
-      throw errorMessages.invalidArguments(['Vector', 'Vector'], arguments);
+      throw errors.invalidArguments(['Vector', 'Vector'], arguments);
     }
   }
 
@@ -73,10 +73,10 @@ class Vector {
    * @returns {Vector} `vec` scaled by `num`
    */
   static scale(vec, num) {
-    if (a instanceof Vector && typeof b === 'number') {
+    if (vec instanceof Vector && typeof num === 'number') {
       return new Vector(vec.x * num, vec.y * num);
     } else {
-      throw errorMessages.invalidArguments(['Vector', 'number'], arguments);
+      throw errors.invalidArguments(['Vector', 'number'], arguments);
     }
   }
 
