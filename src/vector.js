@@ -73,7 +73,7 @@ class Vector {
    * @returns {Vector} `vec` scaled by `num`
    */
   static scale(vec, num) {
-    if (a instanceof Vector && typeof b === 'number') {
+    if (vec instanceof Vector && typeof num === 'number') {
       return new Vector(vec.x * num, vec.y * num);
     } else {
       throw errorMessages.invalidArguments(['Vector', 'number'], arguments);
