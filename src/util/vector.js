@@ -1,4 +1,4 @@
-import errors from './errors';
+import errors from '../dev/errors';
 
 /**
  * Class to hold 2-dimensional vectors

@@ -1,5 +1,5 @@
 import GameObject from './gameobject';
-import errors from './errors';
+import errors from '../dev/errors';
 
 import {
   priv,

@@ -1,8 +1,8 @@
-import errors from './errors';
+import errors from '../dev/errors';
 import {
   priv,
   Vector
-} from './main';
+} from '../main';
 
 /**
  * Base class for all objects in the game
