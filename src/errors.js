@@ -1,5 +1,7 @@
 /**
  * Error messages to be used by all functions in Universe2D. All methods return an error object containing the error message.
+ * @namespace
+ * @private
  */
 const errorMessages = {
   /**

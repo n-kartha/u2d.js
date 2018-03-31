@@ -1,6 +1,6 @@
 import errorMessages from './errors';
 import {
-  private,
+  priv,
   Vector
 } from './main';
 
@@ -14,7 +14,7 @@ class GameObject {
    */
   constructor(pos) {
     if (pos instanceof Vector) {
-      this[private].pos = pos;
+      this[priv].pos = pos;
     } else {
       throw errorMessages.invalidArguments(['Vector'], arguments);
     }
@@ -23,26 +23,26 @@ class GameObject {
   /**
    * Get or set the X co-ordinate
    * @param {number} [to] Value to set the X co-ordinate to
-   * @returns {number|undefined} Current X co-ordinate if `to` is not a number
+   * @returns {number|undefined} Current X co-ordinate if <code>to</code> is not a number
    */
   x(to) {
     if (typeof to !== 'number') {
-      return this[private].pos.x;
+      return this[priv].pos.x;
     } else {
-      this[private].pos.x = to;
+      this[priv].pos.x = to;
     }
   }
 
   /**
    * Get or set the Y co-ordinate
    * @param {number} [to] Value to set the Y co-ordinate to
-   * @returns {number|undefined} Current Y co-ordinate if `to` is not a number
+   * @returns {number|undefined} Current Y co-ordinate if <code>to</code> is not a number
    */
   y(to) {
     if (typeof to !== 'number') {
-      return this[private].pos.y;
+      return this[priv].pos.y;
     } else {
-      this[private].pos.y = to;
+      this[priv].pos.y = to;
     }
   }
 
