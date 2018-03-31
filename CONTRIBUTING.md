@@ -3,7 +3,7 @@ I really appreciate your enthusiasm to contribute to Universe2D. To help you out
 
 Here are the ground rules:
 1. Follow the [style guide](#styleguide).
-2. Keep track of [which branch you commit to](#branches).
+1. Keep track of [which branch you commit to](#branches).
 
 ## Style guide
 The style guide here is really simple. I recommend [Visual Studio Code](https://code.visualstudio.com) with the [Beautify](https://github.com/HookyQR/VSCodeBeautify) extension.
@@ -41,9 +41,7 @@ function add(a, b) {
 ### Additional styles
 Use [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) if required and use single quotes for strings.
 
-All `import`s should be declared at the top of each file.
-
-Error messages should be declared in a `const errorMessages` variable immediately after the `import` statements.
+Use getter and setter functions for classes that are not designed to hold data. For instance, in the `GameObject` class, the major functionality is movement physics, and not storing values, and so we give it getter and setter functions. However, the `Vector` class is a data structure designed to hold a 2D vector (which is just 2 numbers), and so we allow the values to be freely accessed without getters and setters.
 
 ## Branches
 Currently, we have 3 branches:
