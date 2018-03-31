@@ -30,11 +30,16 @@ class BufferExecutor {
    */
   queue(fn) {
     if (typeof fn === 'function') {
-      this[priv].actionList.push(fn);
+      if (!this.executed) {
+        this[priv].actionList.push(fn);
+      } else {
+        fn();
+      }
+
       return this;
     }
 
-    throw errors.invalidArguments(['function']);
+    throw errors.invalidArguments(['function'], arguments);
   }
 
   /**
@@ -75,6 +80,7 @@ class BufferExecutor {
       }
 
       resolve();
+      this.executed = true;
     });
   }
 }
