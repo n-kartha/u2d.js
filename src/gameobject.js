@@ -1,4 +1,4 @@
-import errorMessages from './errors';
+import errors from './errors';
 import {
   priv,
   Vector
@@ -16,7 +16,7 @@ class GameObject {
     if (pos instanceof Vector) {
       this[priv].pos = pos;
     } else {
-      throw errorMessages.invalidArguments(['Vector'], arguments);
+      throw errors.invalidArguments(['Vector'], arguments);
     }
   }
 
@@ -50,7 +50,7 @@ class GameObject {
    * Must be replaced when inherited by a derived class
    */
   draw() {
-    throw errorMessages.notImplemented();
+    throw errors.notImplemented();
   }
 }
 

@@ -1,5 +1,5 @@
 import GameObject from './gameobject';
-import errorMessages from './errors';
+import errors from './errors';
 
 import {
   priv,
@@ -49,7 +49,7 @@ class Sprite extends GameObject {
         }
       }
     } else {
-      throw errorMessages.invalidArguments(['Vector', 'Image', '[object]'], arguments);
+      throw errors.invalidArguments(['Vector', 'Image', '[object]'], arguments);
     }
   }
 
