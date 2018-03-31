@@ -19,8 +19,7 @@ class BufferExecutor {
    * Initializes an empty buffer
    */
   constructor() {
-    this[priv].actionList = [];
-    this[priv].timeouts = [];
+    this.actionList = [];
   }
 
   /**
@@ -31,7 +30,7 @@ class BufferExecutor {
   queue(fn) {
     if (typeof fn === 'function') {
       if (!this.executed) {
-        this[priv].actionList.push(fn);
+        this.actionList.push(fn);
       } else {
         fn();
       }
@@ -69,10 +68,10 @@ class BufferExecutor {
     this.continueExec = true;
 
     return Promise((resolve, reject) => {
-      while (this[priv].actionList.length > 0) {
+      while (this.actionList.length > 0) {
         await delay();
         if (this.continueExec) {
-          let fn = this[priv].actionList.shift();
+          let fn = this.actionList.shift();
           await fn();
         } else {
           reject();
