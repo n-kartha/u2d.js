@@ -1,7 +1,7 @@
 import errors from '../dev/errors';
 
 /**
- * Class to hold 2-dimensional vectors
+ * Class to hold 2-dimensional vectors. WARNING: No type-checking is done to increase performance
  */
 class Vector {
   /**
@@ -10,23 +10,20 @@ class Vector {
    * @param {number} y Y co-ordinate
    */
   constructor(x, y) {
-    if (typeof x === 'number' && typeof y === 'number') {
-      this.x = x;
-      this.y = y;
-    } else {
-      throw errors.invalidArguments(['number', 'number'], arguments);
-    }
+    this.x = +x;
+    this.y = +y;
   }
 
-  // add(n) {
-  //   if (typeof n === 'number') {
-  //     this.x += n;
-  //     this.y += n;
-  //   } else if (n instanceof Vector) {
-  //     this.x += n.x;
-  //     this.y += n.y;
-  //   }
-  // }
+  /**
+   * Adds another vector to self
+   * @param {Vector} n Vector to add
+   * @returns {Vector} New value of self
+   */
+  add(n) {
+    this.x += n.x;
+    this.y += n.y;
+    return this;
+  }
 
   /**
    * Add 2 vectors
@@ -35,22 +32,38 @@ class Vector {
    * @returns {Vector} Mathematical equivalent of a + b
    */
   static add(a, b) {
-    if (a instanceof Vector && b instanceof Vector) {
-      return new Vector(a.x + b.x, a.y + b.y);
-    } else {
-      throw errors.invalidArguments(['Vector', 'Vector'], arguments);
-    }
+    return new Vector(a.x + b.x, a.y + b.y);
   }
 
-  // subtract(n) {
-  //   if (typeof n === 'number') {
-  //     this.x -= n;
-  //     this.y -= n;
-  //   } else if (n instanceof Vector) {
-  //     this.x -= n.x;
-  //     this.y -= n.y;
-  //   }
-  // }
+  /**
+   * Negates self
+   * @returns {Vector} New value of self
+   */
+  neg() {
+    this.x = -this.x;
+    this.y = -this.y;
+    return this;
+  }
+
+  /**
+   * Returns the negative of a vector
+   * @param {Vector} a Vector to negate
+   * @returns {Vector} Equivalent of -a
+   */
+  static neg(a) {
+    return new Vector(-a.x, -a.y);
+  }
+
+  /**
+   * Subtracts another vector from self
+   * @param {Vector} n Vector to subtract
+   * @returns {Vector} New value of self
+   */
+  subtract(n) {
+    this.x -= n.x;
+    this.y -= n.y;
+    return this;
+  }
 
   /**
    * Subtract a vector from another
@@ -59,11 +72,18 @@ class Vector {
    * @returns {Vector} Mathematical equivalent of a - b
    */
   static subtract(a, b) {
-    if (a instanceof Vector && b instanceof Vector) {
-      return new Vector(a.x - b.x, a.y - b.y);
-    } else {
-      throw errors.invalidArguments(['Vector', 'Vector'], arguments);
-    }
+    return new Vector(a.x - b.x, a.y - b.y);
+  }
+
+  /**
+   * Scale self by a number
+   * @param {number} n Number to scale by
+   * @returns {Vector} New value of self
+   */
+  scale(n) {
+    this.x *= n;
+    this.y *= n;
+    return this;
   }
 
   /**
@@ -73,11 +93,16 @@ class Vector {
    * @returns {Vector} `vec` scaled by `num`
    */
   static scale(vec, num) {
-    if (vec instanceof Vector && typeof num === 'number') {
-      return new Vector(vec.x * num, vec.y * num);
-    } else {
-      throw errors.invalidArguments(['Vector', 'number'], arguments);
-    }
+    return new Vector(vec.x * num, vec.y * num);
+  }
+
+  /**
+   * Compares self to another vector
+   * @param {Vector} vec Vector to compare self to
+   * @returns {boolean} Boolean indicating whether self is equal to vec
+   */
+  equals(vec) {
+    return this.x == vec.x && this.y == vec.y;
   }
 
   /**
