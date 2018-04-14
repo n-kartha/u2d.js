@@ -3,6 +3,15 @@ import {
   priv,
   Vector
 } from '../main';
+import FLAGS from '../dev/flags';
+
+/**
+ * Default values that every GameObject starts with
+ * @private
+ */
+const DEFAULTS = {
+  flags: FLAGS.canEscapeCanvas | FLAGS.hidden
+};
 
 /**
  * Base class for all objects in the game
@@ -14,6 +23,7 @@ class GameObject {
    */
   constructor(pos) {
     if (pos instanceof Vector) {
+      this[priv] = DEFAULTS;
       this[priv].pos = pos;
     } else {
       throw errors.invalidArguments(['Vector'], arguments);
@@ -47,10 +57,15 @@ class GameObject {
   }
 
   /**
-   * Must be replaced when inherited by a derived class
+   * Draw self to the canvas
+   * @param {CanvasRenderingContext2D} ctx 
    */
-  draw() {
-    throw errors.notImplemented();
+  draw(ctx) {
+    throw errors.notImplemented(); // you're supposed to implement this function if you're inheriting from GameObject
+  }
+
+  move() {
+
   }
 }
 
