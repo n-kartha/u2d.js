@@ -13,5 +13,4 @@ const U2D = {
   BufferExecutor
 };
 
-window.U2D = U2D;
 export default U2D;
