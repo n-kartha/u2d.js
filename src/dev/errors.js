@@ -11,17 +11,22 @@ const errors = {
    * @returns {TypeError} Throwable error
    */
   invalidArguments(expected, found) {
-    found = [].slice.call(found) // found is an `arguments` object which has to be converted to a regular array to call `map`
+    found = [].slice.call(found) // found is an `arguments` object
       .map(el => typeof el);
 
-    return new TypeError(`Argument Error: Expected arguments [${expected.join(', ')}], found [${found.join(', ')}]`);
+    let err = new Error(`Expected arguments [${expected.join(', ')}], found [${found.join(', ')}]`);
+    err.name = 'ArgumentError';
+
+    return err;
   },
 
   /**
    * Thrown when a function that should be implemented is not
    */
   notImplemented() {
-    return new Error('The function accessed has not been implemented by a derived class.');
+    let err = new Error('The function accessed has not been implemented by a derived class.');
+    err.name = 'NotImplementedError';
+    return err;
   }
 };
 
