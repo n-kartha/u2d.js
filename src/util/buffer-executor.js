@@ -67,7 +67,7 @@ class BufferExecutor {
 
     this.continueExec = true;
 
-    return Promise((resolve, reject) => {
+    return Promise(async function (resolve, reject) {
       while (this.actionList.length > 0) {
         await delay();
         if (this.continueExec) {
