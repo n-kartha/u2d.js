@@ -97,6 +97,15 @@ class Vector {
   }
 
   /**
+   * Clone a vector
+   * @param {*} vec 
+   * @returns {Vector} Clone of <code>vec</code>
+   */
+  static clone(vec) {
+    return new Vector(vec.x, vec.y);
+  }
+
+  /**
    * Compares self to another vector
    * @param {Vector} vec Vector to compare self to
    * @returns {boolean} Boolean indicating whether self is equal to vec
