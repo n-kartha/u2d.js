@@ -94,24 +94,26 @@ class GameObject {
 
   /**
    * Get velocity vector. Override this function for custom velocity functions.
+   * @param {number} t Time elapsed since the beginning of the game
    * @returns {Vector} Current velocity
    */
-  getVelocity() {
-    return this[priv].velocity;
+  getVelocity(t) {
+    return this[priv].velocity.clone();
   }
 
   /**
    * Get force acting on object. Override this function for custom force functions.
+   * @param {number} t Time elapsed since the beginning of the game
    * @returns {Vector} Vector representing the force acting on self
    */
-  getForce() {
+  getForce(t) {
     if (!(this[priv].forceTime > 0 || this[priv].forceTime === -1)) {
       this[priv].force = new Vector(0, 0);
     }
 
     // We do not want to give the user control over the private
     // variable, so we create a Vector clone of the force.
-    return Vector.clone(this[priv].force);
+    return this[priv].force.clone();
   }
 
   /**
@@ -145,10 +147,11 @@ class GameObject {
 
   /**
    * Draw self to the canvas
-   * @param {CanvasRenderingContext2D} ctx 
+   * @param {CanvasRenderingContext2D} ctx Context to draw onto
+   * @param {number} time Time (in s) since the beginning of the game
    */
-  draw(ctx) {
-    throw errors.notImplemented(); // you're supposed to implement this function if you're inheriting from GameObject
+  draw(ctx, time) {
+    throw errors.notImplemented();
   }
 
   /**
@@ -189,7 +192,7 @@ class GameObject {
    * @param {number} t Seconds elapsed since the beginning of the game
    */
   move(bounds, t, delta) {
-    this[priv].velocity.add(Vector.scale(this.getForce(), 1 / this[priv].mass));
+    this[priv].velocity.add(Vector.scale(this.getForce(t), 1 / this[priv].mass));
     let velocity = this.getVelocity(t);
 
     if (!(this[priv].flags & FLAGS.canEscapeCanvas)) {
