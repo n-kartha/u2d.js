@@ -57,14 +57,10 @@ class BufferExecutor {
 
   /**
    * Execute queued functions
-   * @param {number} delay Delay between executions (ms)
+   * @param {number} [delay=0] Delay between executions (ms)
    * @returns {Promise} Resloves when all execution is 
    */
-  async execute(delay) {
-    if (typeof delay !== "number") {
-      delay = 0;
-    }
-
+  async execute(delay = 0) {
     this.continueExec = true;
 
     return Promise(async function (resolve, reject) {
