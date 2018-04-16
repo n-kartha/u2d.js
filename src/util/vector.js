@@ -97,8 +97,16 @@ class Vector {
   }
 
   /**
+   * Clones self
+   * @returns {Vector} Clone of self
+   */
+  clone() {
+    return new Vector(this.x, this.y);
+  }
+
+  /**
    * Clone a vector
-   * @param {*} vec 
+   * @param {Vector} vec 
    * @returns {Vector} Clone of <code>vec</code>
    */
   static clone(vec) {
