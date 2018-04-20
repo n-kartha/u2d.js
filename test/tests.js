@@ -8,7 +8,7 @@ const {
 
 runInThisContext(readFileSync('u2d.min.js'));
 
-Object.assign(global, U2D);
+const Vector = U2D.Vector;
 
 QUnit.test('builds', (assert) => {
   assert.ok(typeof U2D === 'object');
@@ -40,7 +40,8 @@ QUnit.test('vector-add', (assert) => {
     .equals(new Vector(30, 30)), 'static');
 });
 
-QUnit.add('vector-neg', (assert) => {
+QUnit.test('vector-neg', (assert) => {
   let a = new Vector(10, 10);
-  assert.ok(new Vector(10, 10), 'instance');
+  assert.ok(a.neg()
+    .equals(new Vector(-10, -10)), 'instance');
 });
