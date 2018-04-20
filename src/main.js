@@ -1,16 +1,22 @@
-import Vector from './util/vector';
 import BufferExecutor from './util/buffer-executor';
+import GameObject from './gameobject/gameobject';
+import Vector from './util/vector';
 
 /**
- * Namespace for all u2d functions and variables
+ * `Symbol` to be used for private variables in classes
  */
-const U2D = {
-  /**
-   * <code>Symbol</code> to be used for private variables in classes
-   */
-  priv: Symbol('Universe2D private symbol'),
-  Vector,
-  BufferExecutor
+const priv = Symbol('Universe2D private symbol');
+
+/**
+ * Objects and classes for extending the library
+ */
+const dev = {
+  GameObject
 };
 
-export default U2D;
+export {
+  priv,
+  Vector,
+  BufferExecutor,
+  dev
+};
