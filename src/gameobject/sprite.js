@@ -1,13 +1,12 @@
-import GameObject from './gameobject';
 import errors from '../dev/errors';
-
+import GameObject from './gameobject';
+import Vector from '../util/vector';
 import {
-  priv,
-  Vector
-} from './main';
+  priv
+} from '../main';
 
 /**
- * Object to be passed as arguments to the <code>constructor</code> of <code>Sprite</code>
+ * Template for object to be passed as arguments to the <code>constructor</code> of <code>Sprite</code>
  * @typedef SpriteSettings
  * @type {Object}
  * @property {Vector} dimensions Heigth and width of each sprite
@@ -34,7 +33,7 @@ class Sprite extends GameObject {
 
       if (spriteSettings) {
         if (spritesettings.dimensions instanceof Vector &&
-          typeof spritesettings.fps === 'number') {
+          typeof spriteSettings.fps === 'number') {
 
           this[priv].frameDim = spriteSettings.dimensions;
           this[priv].fps = spriteSettings.fps;
@@ -53,7 +52,7 @@ class Sprite extends GameObject {
     }
   }
 
-  update(frame, fps) {
+  update(time) {
 
   }
 }
