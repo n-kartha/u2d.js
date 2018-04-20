@@ -1,10 +1,10 @@
-import {
-  priv,
-  Vector,
-  BufferExecutor
-} from './main';
-import GameObject from './gameobject/gameobject';
+import BufferExecutor from './util/buffer-executor';
 import errors from './dev/errors';
+import GameObject from './gameobject/gameobject';
+import Vector from './util/vector';
+import {
+  priv
+} from './main';
 
 /**
  * Adds a canvas to the document
@@ -88,16 +88,19 @@ class Universe {
   draw() {
     requestAnimationFrame(this.draw.bind(this));
     let currTime = performance.now();
-    let time = (currTime - this[priv].startTime) / 1000;
-    let delta = (currTime - this[priv].startTime) * this[priv].fps / 1000;
+    let delta = (currTime - this[priv].lastTime) * this[priv].fps / 1000;
 
     for (let obj of this[priv].objects) {
       try {
-        obj.move(this[priv].dim, time, delta);
+        obj.move(this[priv].dim, delta);
         obj.draw(time);
       } catch (err) {
         console.log(err);
       }
     }
+
+    this[priv].lastTime = currTime;
   }
 }
+
+export default Universe;

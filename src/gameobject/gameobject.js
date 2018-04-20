@@ -1,9 +1,9 @@
 import errors from '../dev/errors';
-import {
-  priv,
-  Vector
-} from '../main';
 import FLAGS from '../dev/flags';
+import Vector from '../util/vector';
+import {
+  priv
+} from '../main';
 
 /**
  * Default values that every GameObject starts with
@@ -48,6 +48,7 @@ class GameObject {
     if (pos instanceof Vector) {
       this[priv] = DEFAULTS;
       this[priv].pos = pos;
+      this[priv].creation = performance.now();
     } else {
       throw errors.invalidArguments(['Vector'], arguments);
     }
@@ -60,7 +61,8 @@ class GameObject {
    */
   x(to) {
     if (typeof to !== 'number') {
-      return this[priv].pos.x;
+      return this.getCoords()
+        .x;
     } else {
       this[priv].pos.x = to;
     }
@@ -73,10 +75,20 @@ class GameObject {
    */
   y(to) {
     if (typeof to !== 'number') {
-      return this[priv].pos.y;
+      return this.getCoords()
+        .y;
     } else {
       this[priv].pos.y = to;
     }
+  }
+
+  /**
+   * Get position vector at current frame. Designed to be overriden.
+   * @param {number} t Time elapsed since the creation of self (in ms)
+   * @returns {Vector} Current position
+   */
+  getCoords(t) {
+    return this[priv].pos.clone();
   }
 
   /**
@@ -93,8 +105,8 @@ class GameObject {
   }
 
   /**
-   * Get velocity vector. Override this function for custom velocity functions.
-   * @param {number} t Time elapsed since the beginning of the game
+   * Get velocity vector at current frame. Designed to be overriden.
+   * @param {number} t Time elapsed since the creation of self (in ms)
    * @returns {Vector} Current velocity
    */
   getVelocity(t) {
@@ -102,17 +114,15 @@ class GameObject {
   }
 
   /**
-   * Get force acting on object. Override this function for custom force functions.
-   * @param {number} t Time elapsed since the beginning of the game
+   * Get force acting on object at current frame. Designed to be overriden.
+   * @param {number} t Time elapsed since the creation of self (in ms)
    * @returns {Vector} Vector representing the force acting on self
    */
   getForce(t) {
-    if (!(this[priv].forceTime > 0 || this[priv].forceTime === -1)) {
+    if (this[priv].forceTime !== -1 && performance.now() > this[priv].forceTime) {
       this[priv].force = new Vector(0, 0);
     }
 
-    // We do not want to give the user control over the private
-    // variable, so we create a Vector clone of the force.
     return this[priv].force.clone();
   }
 
@@ -130,7 +140,7 @@ class GameObject {
   /**
    * Push the object
    * @param {Vector} force 
-   * @param {number} time Number of seconds
+   * @param {number} time Amount of time to push (in ms)
    */
   pushXY(force, time = -1) {
     if (force instanceof Vector) {
@@ -138,7 +148,7 @@ class GameObject {
       this[priv].force.y += force.y;
 
       if (typeof time === "number") {
-
+        this[priv].forceTime = time === -1 ? -1 : performance.now() + time;
       }
     } else {
       throw errors.invalidArguments(['Vector', '[number]'], arguments);
@@ -148,7 +158,7 @@ class GameObject {
   /**
    * Draw self to the canvas
    * @param {CanvasRenderingContext2D} ctx Context to draw onto
-   * @param {number} time Time (in s) since the beginning of the game
+   * @param {number} time Time elapsed since the creation of self (in ms)
    */
   draw(ctx, time) {
     throw errors.notImplemented();
@@ -189,10 +199,16 @@ class GameObject {
   /**
    * Internal function used to move object. Called automatically each frame.
    * @param {Vector} bounds Width and height of bounding rectangle
-   * @param {number} t Seconds elapsed since the beginning of the game
+   * @param {number} delta Factor to multiply all changes by
    */
-  move(bounds, t, delta) {
-    this[priv].velocity.add(Vector.scale(this.getForce(t), 1 / this[priv].mass));
+  move(bounds, delta) {
+    let t = performance.now() - this[priv].creation;
+
+    this[priv].velocity.add(
+      Vector.scale(this.getForce(t), 1 / this[priv].mass)
+      .scale(delta)
+    );
+
     let velocity = this.getVelocity(t);
 
     if (!(this[priv].flags & FLAGS.canEscapeCanvas)) {
@@ -202,8 +218,10 @@ class GameObject {
       );
     }
 
-    this[priv].pos.add(velocity);
+    this[priv].pos.add(velocity.scale(delta));
   }
 }
 
-export default GameObject;
+export {
+  GameObject
+};
