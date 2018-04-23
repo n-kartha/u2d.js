@@ -6,7 +6,8 @@
   "scripts": {
     "test": "qunit",
     "build": "webpack",
-    "doc": "jsdoc src -c jsdoc.config.json -d doc -R README.md"
+    "doc": "jsdoc src -c jsdoc.config.json -d doc -R README.md -r",
+    "build-tests": "webpack"
   },
   "repository": {
     "type": "git",
