@@ -9,6 +9,7 @@ const {
 runInThisContext(readFileSync('u2d.min.js'));
 
 const Vector = U2D.Vector;
+const Universe = U2D.Universe;
 
 QUnit.test('builds', (assert) => {
   assert.ok(typeof U2D === 'object');
@@ -44,4 +45,8 @@ QUnit.test('vector-neg', (assert) => {
   let a = new Vector(10, 10);
   assert.ok(a.neg()
     .equals(new Vector(-10, -10)), 'instance');
+});
+
+QUnit.test('gameobject-constructor', (assert) => {
+
 });

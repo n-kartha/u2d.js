@@ -7,41 +7,58 @@ import {
 
 /**
  * Default values that every GameObject starts with
- * @private
  */
 const DEFAULTS = {
   /**
-   * Boolean values belonging to the GameObject
+   * Boolean values belonging to the `GameObject`
+   * 
+   * @summary Boolean flags
+   * @member GameObject#private:flags
    */
   flags: FLAGS.canEscapeCanvas,
 
   /**
-   * Velocity vector of the object in pixels/frame
+   * Velocity vector of the object in `px/frame`
+   * 
+   * @summary Stored velocity
+   * @member GameObject#private:velocity
    */
   velocity: new Vector(0, 0),
 
   /**
-   * Force vector acting on the object in kg*pixels/frame^2
+   * Force vector acting on the object in `kg * px / frame^2`
+   * 
+   * @summary Stored force
+   * @member GameObject#private:force
    */
   force: new Vector(0, 0),
 
   /**
-   * Mass of the object (an arbitrary number without any unit, but we'll use kg)
+   * Mass of the object
+   * 
+   * @summary Stored mass
+   * @member GameObject#private:force
    */
   mass: 0,
 
   /**
-   * Number of frames that the force should last for
+   * Time until which the force should last (in `ms`)
+   * 
+   * @summary Stop time for force
+   * @member GameObject#private:forceTime
    */
   forceTime: 0
 };
 
 /**
- * Base class for all objects in the game
+ * `U2D.dev.GameObject`: Base class for all objects in the game. Inherit this class to define new types of objects to be drawn onto the canvas. Do not use directly.
+ * 
+ * @summary Base class for game objects
  */
 class GameObject {
   /**
-   * Create a new GameObject at the specified position
+   * Create a new `GameObject` at the specified position
+   * 
    * @param {Vector} pos Vector describing the position of the object
    */
   constructor(pos) {
@@ -56,8 +73,10 @@ class GameObject {
 
   /**
    * Get or set the X co-ordinate
+   * 
+   * @summary Get/set X
    * @param {number} [to] Value to set the X co-ordinate to
-   * @returns {number|undefined} Current X co-ordinate if <code>to</code> is not a number
+   * @returns {number|undefined} Current X co-ordinate if `to` is not a number
    */
   x(to) {
     if (typeof to !== 'number') {
@@ -70,8 +89,10 @@ class GameObject {
 
   /**
    * Get or set the Y co-ordinate
+   * 
+   * @summary Get/set Y
    * @param {number} [to] Value to set the Y co-ordinate to
-   * @returns {number|undefined} Current Y co-ordinate if <code>to</code> is not a number
+   * @returns {number|undefined} Current Y co-ordinate if `to` is not a number
    */
   y(to) {
     if (typeof to !== 'number') {
@@ -84,6 +105,8 @@ class GameObject {
 
   /**
    * Get position vector at current frame. Designed to be overriden.
+   * 
+   * @summary (Overridable) Get co-ordinates
    * @param {number} t Time elapsed since the creation of self (in ms)
    * @returns {Vector} Current position
    */
@@ -93,8 +116,10 @@ class GameObject {
 
   /**
    * Get or set velocity vector
+   * 
+   * @summary Get/set velocity
    * @param {Vector} [v] Vector to set velocity to
-   * @returns {Vector|undefined} Current velociy if <code>v</code> is not a Vector
+   * @returns {Vector|undefined} Current velociy if `v` is not a Vector
    */
   velocity(v) {
     if (v instanceof Vector) {
@@ -106,6 +131,8 @@ class GameObject {
 
   /**
    * Get velocity vector at current frame. Designed to be overriden.
+   * 
+   * @summary (Overridable) Get velocity
    * @param {number} t Time elapsed since the creation of self (in ms)
    * @returns {Vector} Current velocity
    */
@@ -115,6 +142,8 @@ class GameObject {
 
   /**
    * Get force acting on object at current frame. Designed to be overriden.
+   * 
+   * @summary (Overridable) Get force
    * @param {number} t Time elapsed since the creation of self (in ms)
    * @returns {Vector} Vector representing the force acting on self
    */
@@ -128,6 +157,8 @@ class GameObject {
 
   /**
    * Get or set the mass
+   * 
+   * @summary Get/set mass
    */
   mass(m) {
     if (typeof m === "number") {
@@ -138,17 +169,20 @@ class GameObject {
   }
 
   /**
-   * Push the object
-   * @param {Vector} force 
+   * Push the object, adding the specified force to the current force for `time` milliseconds
+   * 
+   * @summary Apply (add) force for some time
+   * @param {Vector} force Force to add
    * @param {number} time Amount of time to push (in ms)
    */
   pushXY(force, time = -1) {
     if (force instanceof Vector) {
-      this[priv].force.x += force.x;
-      this[priv].force.y += force.y;
+      this[priv].force.add(force);
 
-      if (typeof time === "number") {
-        this[priv].forceTime = time === -1 ? -1 : performance.now() + time;
+      if (+time > 0) {
+        setTimeout(() => {
+          this[priv].force.subtract(force);
+        }, time);
       }
     } else {
       throw errors.invalidArguments(['Vector', '[number]'], arguments);
@@ -156,9 +190,12 @@ class GameObject {
   }
 
   /**
-   * Draw self to the canvas
+   * Draw `self` to the canvas. This is called automatically, so you do not have to call it yourself.
+   * 
+   * @summary (Internal) Draw `self`
    * @param {CanvasRenderingContext2D} ctx Context to draw onto
    * @param {number} time Time elapsed since the creation of self (in ms)
+   * @virtual
    */
   draw(ctx, time) {
     throw errors.notImplemented();
@@ -166,7 +203,10 @@ class GameObject {
 
   /**
    * Returns whether the object lies entirely to the right of some X co-ordinate
+   * 
+   * @summary Lies right of a vertical axis
    * @param {number} x X co-ordinate to test
+   * @virtual
    */
   liesRightOf(x) {
     throw errors.notImplemented();
@@ -174,6 +214,8 @@ class GameObject {
 
   /**
    * Returns whether the object lies entirely to the left of some X co-ordinate
+   * 
+   * @summary Lies left of a vertical axis
    * @param {number} x X co-ordinate to test
    */
   liesLeftOf(x) {
@@ -182,7 +224,10 @@ class GameObject {
 
   /**
    * Returns whether the object lies entirely above some Y co-ordinate
+   * 
+   * @summary Lies above a horizontal axis
    * @param {number} y Y co-ordinate to test
+   * @virtual
    */
   liesAbove(y) {
     throw errors.notImplemented();
@@ -190,7 +235,10 @@ class GameObject {
 
   /**
    * Returns whether the object lies entirely below some Y co-ordinate
+   * 
+   * @summary Lies below a virtual axis
    * @param {number} y Y co-ordinate to test
+   * @virtual
    */
   liesBelow(y) {
     throw errors.notImplemented();
@@ -198,6 +246,8 @@ class GameObject {
 
   /**
    * Internal function used to move object. Called automatically each frame.
+   * 
+   * @summary (Internal) Move `self`
    * @param {Vector} bounds Width and height of bounding rectangle
    * @param {number} delta Factor to multiply all changes by
    */

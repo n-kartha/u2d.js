@@ -1,3 +1,40 @@
 {
-  "plugins": ["plugins/markdown"]
+  "plugins": ["plugins/markdown"],
+  "templates": {
+    "systemName": "Universe2D",
+    "systemSummary": "Yet another game library written in JavaScript",
+    "systemColor": "#0075ba",
+    "inlineNav": true,
+    "navMembers": [{
+        "kind": "class",
+        "title": "Classes",
+        "summary": "Classes within the U2D namespace"
+      },
+      {
+        "kind": "external",
+        "title": "External members",
+        "summary": "Objects that do not belong to U2D but are used by it"
+      },
+      {
+        "kind": "global",
+        "title": "Globals",
+        "summary": "Global variables within the U2D namespace"
+      },
+      {
+        "kind": "mixin",
+        "title": "Mixins",
+        "summary": "All documented mixins."
+      },
+      {
+        "kind": "namespace",
+        "title": "Namespaces",
+        "summary": "Namespaces in U2D"
+      },
+      {
+        "kind": "tutorial",
+        "title": "Tutorials",
+        "summary": "Tutorials for using U2D"
+      }
+    ]
+  }
 }
