@@ -5,19 +5,8 @@ import Vector from './util/vector';
 
 /**
  * @summary The Universe2D namespace for holding all objects exported by the library. Globally available.
- * @namespace
+ * @namespace U2D
  */
-export const U2D = {};
-
-/**
- * @see Universe
- */
-U2D.Universe = Universe;
-
-/**
- * @see Vector
- */
-U2D.Vector = Vector;
 
 /**
  * You can access private variables in classes within `U2D` like this:
@@ -36,26 +25,28 @@ U2D.Vector = Vector;
  * @summary `U2D.priv`: `Symbol` to be used for private variables in classes.
  * @public
  */
-U2D.priv = Symbol('Universe2D private symbol');
+const priv = Symbol('Universe2D private symbol');
 
 /**
  * @summary `U2D.dev`: Objects and classes for extending the library. You would probably not need to use this if you are not going in-depth.
- * @namespace
+ * @namespace U2D.dev
  */
-U2D.dev = {};
-
-/**
- * @see GameObject
- */
-U2D.GameObject = GameObject;
+const dev = {
+  GameObject
+};
 
 /**
  * @summary `U2D.util`: Miscellaneous functions and classes that you can use for yourself. These are probably also used within functions inside the library.
- * @namespace
+ * @namespace U2D.util
  */
-U2D.util = {};
+const util = {
+  BufferExecutor
+};
 
-/**
- * @see BufferExecutor
- */
-U2D.util.BufferExecutor = BufferExecutor;
+export {
+  Universe,
+  Vector,
+  priv,
+  dev,
+  util
+};
