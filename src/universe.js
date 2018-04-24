@@ -4,7 +4,7 @@ import GameObject from './gameobject/gameobject';
 import Vector from './util/vector';
 import {
   priv
-} from './main';
+} from './exports';
 
 /**
  * Adds a canvas to the document
@@ -20,7 +20,8 @@ function addCanvas(dimensions, appendTo) {
    * @member {HTMLCanvasElement} Universe#private:canvas
    */
   this[priv].canvas = document.createElement('canvas');
-  Object.assign(this.canvas, {
+
+  Object.assign(this[priv].canvas, {
     width: dimensions.x,
     height: dimensions.y
   });
@@ -31,10 +32,10 @@ function addCanvas(dimensions, appendTo) {
    * @summary 2D context API to draw onto
    * @member {CanvasRenderingContext2D} Universe#ctx
    */
-  this.ctx = this.canvas.getContext('2d');
+  this.ctx = this[priv].canvas.getContext('2d');
 
   document.querySelector(appendTo)
-    .appendChild(this.canvas);
+    .appendChild(this[priv].canvas);
 
   /**
    * Time at which the `Universe` was created (in ms)
@@ -88,6 +89,8 @@ let readyBuffer = new BufferExecutor();
 if (document.readyState === 'interactive') {
   readyBuffer.execute();
 }
+
+document.addEventListener('DOMContentLoaded', () => readyBuffer.execute());
 
 /**
  * `U2D.Universe`: Class for interacting with a HTML5 `CanvasRenderingContext2D`
@@ -152,28 +155,59 @@ class Universe {
   }
 
   /**
+   * Adds a `GameObject` to the {@link Universe#private:objects|`objects` list} so that it is drawn onto the canvas the next time the screen is updated
+   * 
+   * @summary Adds an object to the game
+   * @param {GameObject} obj Object to be added
+   */
+  add(obj) {
+    this[priv].objects.push(obj);
+  }
+
+  /**
+   * Move an objects Z position to just in front of another's
+   * 
+   * @summary Change Z in front of another object
+   * @param {GameObject} obj Object to change the Z of
+   * @param {GameObject} before Object to put `obj` in front of
+   */
+  setZBefore(obj, before) {
+    let objIndex, beforeIndex;
+
+    if ((objIndex = this[priv].objects.indexOf(obj)) === -1 ||
+      (beforeIndex = this[priv].objects.indexOf(before)) === -1) {
+      throw errors.inexistent();
+    }
+
+    this[priv].objects.splice(objIndex, 1);
+    this[priv].objects.splice(beforeIndex, 0, obj);
+  }
+
+  /**
    * Draws all objects onto the canvas. This function is called automatically and is controlled by `requestAnimationFrame`, so you do not have to try and call this function yourself.
    * 
    * @summary (Internal) Draws objects
    */
   draw() {
-    /**
-     * ID returned by `requestAnimationFrame` for the previous call of {@link Universe#draw|`Universe.prototype.draw`}
-     * 
-     * @summary `requestAnimationFrame` ID
-     * @member {number} Universe#private:animId
-     */
     if (this.running) {
+      /**
+       * ID returned by `requestAnimationFrame` for the previous call of {@link Universe#draw|`Universe.prototype.draw`}
+       * 
+       * @summary `requestAnimationFrame` ID
+       * @member {number} Universe#private:animId
+       */
       this[priv].animId = requestAnimationFrame(this.draw.bind(this));
     }
 
     let currTime = performance.now();
     let delta = (currTime - this[priv].lastTime) * this[priv].fps / 1000;
 
+    this.ctx.fillRect(0, 0, this[priv].dim.x, this[priv].dim.y);
+
     for (let obj of this[priv].objects) {
       try {
         obj.move(this[priv].dim, delta);
-        obj.draw(time);
+        obj.draw(this.ctx, time);
       } catch (err) {
         console.log(err);
       }

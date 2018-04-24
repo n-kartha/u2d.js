@@ -12,6 +12,20 @@ function wait(ms) {
 }
 
 /**
+ * Recursively execute buffer
+ * @param {BufferExecutor} buf
+ * @param {function} callback
+ */
+async function recurseExec(buf, callback) {
+  if (buf.actionList.length === 0 || !buf.continueExec) {
+    return;
+  }
+
+  await buf.actionList.shift()();
+  setTimeout(recurseExec.bind(undefined, buf), buf.delay);
+}
+
+/**
  * Executes a buffer with an optional interval
  * 
  * @summary Executes functions in a buffer
@@ -85,9 +99,8 @@ class BufferExecutor {
    * 
    * @summary Begin execution
    * @param {number} [delay=0] Delay between executions (ms)
-   * @returns {Promise} `Promise` that resolves when all functions execute correctly and rejects if any function throws an error or if the execution was {@link BufferExecutor#pause|paused}. The first argument of the `reject` callback is `true` if it rejected because of a pause.
    */
-  async execute(delay = 0) {
+  execute(delay = 0) {
     /**
      * Boolean indicating whether execution is paused or is allowed to continue
      * 
@@ -95,20 +108,9 @@ class BufferExecutor {
      * @member BufferExecutor#continueExec
      */
     this.continueExec = true;
+    console.log(this);
 
-    return Promise(async function (resolve, reject) {
-      while (this.actionList.length > 0) {
-        await delay();
-        if (this.continueExec) {
-          let fn = this.actionList.shift();
-          await fn();
-        } else {
-          reject(true);
-        }
-      }
-
-      resolve();
-
+    recurseExec(this, () => {
       /**
        * Boolean indicating whether execution is complete
        * 

@@ -27,6 +27,12 @@ const errors = {
     let err = new Error('The function accessed has not been implemented by a derived class.');
     err.name = 'NotImplementedError';
     return err;
+  },
+
+  inexistent() {
+    let err = new Error(`The object specified does not exist in the current Universe.`);
+    err.name = 'InexistentObjectError';
+    return err;
   }
 };
 
