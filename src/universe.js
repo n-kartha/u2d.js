@@ -14,12 +14,12 @@ import {
  */
 function addCanvas(dimensions, appendTo) {
   /**
-   * HTML5 `Canvas` element appended to `appendTo`, containing the width and height specified in the x and y values of `dimensions` specified in {@link Universe#newuniverse-dimensions-appendto|the `constructor` of `Universe`}
+   * HTML5 `<canvas>` element appended to `appendTo`, containing the width and height specified in the x and y values of `dimensions` specified in {@link Universe#newuniverse-dimensions-appendto|the `constructor` of `Universe`}
    * 
-   * @summary `Canvas` onto which `GameObject`s are drawn
-   * @member {HTMLCanvasElement} Universe#canvas
+   * @summary Canvas onto which `GameObject`s are drawn
+   * @member {HTMLCanvasElement} Universe#private:canvas
    */
-  this.canvas = document.createElement('canvas');
+  this[priv].canvas = document.createElement('canvas');
   Object.assign(this.canvas, {
     width: dimensions.x,
     height: dimensions.y
@@ -37,12 +37,27 @@ function addCanvas(dimensions, appendTo) {
     .appendChild(this.canvas);
 
   /**
-   * Timestamp of the time at which the `Universe` was created
+   * Time at which the `Universe` was created (in ms)
    * 
    * @summary Creation timestamp
-   * @member {number} Universe#[priv].startTime
+   * @member {number} Universe#private:startTime
+   */
+
+  /**
+   * Time at which the previous frame was shown (in ms)
+   * 
+   * @summary Previous frame timestamp
+   * @member {number} Universe#private:lastFrame
    */
   this[priv].startTime = this[priv].lastFrame = performance.now();
+
+  /**
+   * Boolean indicating whether it is safe to request the next animation frame
+   * 
+   * @summary Increment frame
+   * @member {boolean} Universe#running
+   */
+  this.running = true;
   requestAnimationFrame(this.draw.bind(this));
 }
 
@@ -76,6 +91,8 @@ if (document.readyState === 'interactive') {
 
 /**
  * `U2D.Universe`: Class for interacting with a HTML5 `CanvasRenderingContext2D`
+ * 
+ * @summary Canvas manipulator
  */
 class Universe {
   /**
@@ -113,12 +130,43 @@ class Universe {
   }
 
   /**
+   * Stops drawing and requesting more animation frames
+   * 
+   * @summary Pauses the game
+   */
+  pause() {
+    cancelAnimationFrame(this[priv].animId);
+    this.running = false;
+  }
+
+
+  /**
+   * Restarts drawing and requesting animation frames
+   * 
+   * @summary Resumes the game
+   */
+  resume() {
+    this[priv].lastFrame = performance.now();
+    requestAnimationFrame(this[priv].animId);
+    this.running = true;
+  }
+
+  /**
    * Draws all objects onto the canvas. This function is called automatically and is controlled by `requestAnimationFrame`, so you do not have to try and call this function yourself.
    * 
-   * @summary Draws objects
+   * @summary (Internal) Draws objects
    */
   draw() {
-    requestAnimationFrame(this.draw.bind(this));
+    /**
+     * ID returned by `requestAnimationFrame` for the previous call of {@link Universe#draw|`Universe.prototype.draw`}
+     * 
+     * @summary `requestAnimationFrame` ID
+     * @member {number} Universe#private:animId
+     */
+    if (this.running) {
+      this[priv].animId = requestAnimationFrame(this.draw.bind(this));
+    }
+
     let currTime = performance.now();
     let delta = (currTime - this[priv].lastTime) * this[priv].fps / 1000;
 
