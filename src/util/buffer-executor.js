@@ -1,7 +1,7 @@
 import errors from '../dev/errors';
 import {
   priv
-} from '../main';
+} from '../exports';
 
 function wait(ms) {
   if (ms) {

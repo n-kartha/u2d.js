@@ -1,5 +1,4 @@
 import errors from '../dev/errors';
-import U2D from '../main';
 
 /**
  * `U2D.Vector`: Holds 2-dimensional vectors. **No type-checking is done, so that the library performs better.**

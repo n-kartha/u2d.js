@@ -3,7 +3,7 @@ import FLAGS from '../dev/flags';
 import Vector from '../util/vector';
 import {
   priv
-} from '../main';
+} from '../exports';
 
 /**
  * Default values that every GameObject starts with

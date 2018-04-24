@@ -2,7 +2,7 @@ import GameObject from '../gameobject/gameobject'
 import Vector from '../util/vector';
 import {
   priv
-} from '../main';
+} from '../exports';
 
 /**
  * Dummy GameObject used for testing

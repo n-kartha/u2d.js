@@ -3,7 +3,7 @@ import GameObject from './gameobject';
 import Vector from '../util/vector';
 import {
   priv
-} from '../main';
+} from '../exports';
 
 /**
  * Template for object to be passed as arguments to the `constructor` of `Sprite`. This is not actually a type. Create an object that follows this template to pass arguments to the `constructor` of `U2D.Sprite`.
