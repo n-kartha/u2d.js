@@ -4,12 +4,6 @@ const {
   priv
 } = U2D;
 
-import GameObject from '../gameobject/gameobject'
-import Vector from '../util/vector';
-import {
-  priv
-} from '../exports';
-
 /**
  * Dummy GameObject used for testing
  * @private
