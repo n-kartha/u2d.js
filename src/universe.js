@@ -207,7 +207,7 @@ class Universe {
     for (let obj of this[priv].objects) {
       try {
         obj.move(this[priv].dim, delta);
-        obj.draw(this.ctx, time);
+        obj.draw(this.ctx, currTime);
       } catch (err) {
         console.log(err);
       }
