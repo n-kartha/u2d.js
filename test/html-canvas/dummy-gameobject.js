@@ -1,3 +1,9 @@
+const GameObject = U2D.dev.GameObject;
+const {
+  Vector,
+  priv
+} = U2D;
+
 import GameObject from '../gameobject/gameobject'
 import Vector from '../util/vector';
 import {
@@ -34,3 +40,5 @@ class DummyGameObject extends GameObject {
     return this.getCoords(performance.now() - this[priv].creation) > y;
   }
 }
+
+window.DummyGameObject = DummyGameObject;
