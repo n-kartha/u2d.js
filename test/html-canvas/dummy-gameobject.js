@@ -21,6 +21,7 @@ class DummyGameObject extends GameObject {
 
   draw(ctx) {
     let coords = this.getCoords();
+    ctx.fillStyle = 'white';
     ctx.fillRect(coords.x, coords.y, 10, 10);
   }
 

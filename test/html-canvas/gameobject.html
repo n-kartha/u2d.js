@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<script src="../../u2d.min.js"></script>
+<script src="dummy-gameobject.js"></script>
+<script>
+  const {
+    Universe,
+    Vector
+  } = U2D.Universe;
+
+  let u = new Universe();
+  let d = new DummyGameObject();
+
+  u.add(d);
+
+  d.getCoords = (t) => new Vector(200, 300 + 100 * Math.cos(t / 1000));
+
+</script>
