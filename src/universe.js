@@ -226,6 +226,7 @@ class Universe {
     let currTime = performance.now();
     let delta = (currTime - this[priv].lastTime) * this[priv].fps / 1000;
 
+    this.ctx.fillStyle = 'black';
     this.ctx.fillRect(0, 0, this[priv].dim.x, this[priv].dim.y);
 
     for (let obj of this[priv].objects) {
