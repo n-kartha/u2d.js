@@ -39,7 +39,7 @@ const DEFAULTS = {
    * @summary Stored mass
    * @member GameObject#private:force
    */
-  mass: 0,
+  mass: 100,
 
   /**
    * Time until which the force should last (in `ms`)
