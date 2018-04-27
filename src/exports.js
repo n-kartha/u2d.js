@@ -1,4 +1,5 @@
 import BufferExecutor from './util/buffer-executor';
+import EventManager from './dev/event-manager';
 import GameObject from './gameobject/gameobject';
 import Universe from './universe';
 import Vector from './util/vector';
@@ -32,7 +33,8 @@ const priv = Symbol('Universe2D private symbol');
  * @namespace U2D.dev
  */
 const dev = {
-  GameObject
+  GameObject,
+  EventManager
 };
 
 /**

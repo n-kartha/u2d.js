@@ -1,5 +1,6 @@
 import BufferExecutor from './util/buffer-executor';
 import errors from './dev/errors';
+import EventManager from './dev/event-manager';
 import GameObject from './gameobject/gameobject';
 import Vector from './util/vector';
 import {
@@ -59,6 +60,15 @@ function addCanvas(dimensions, appendTo) {
    * @member {boolean} Universe#running
    */
   this.running = true;
+
+  /**
+   * Fired when the canvas that the Universe draws onto is added to the document
+   * 
+   * @summary Canvas added to document
+   * @event Universe#canvas
+   */
+  this.event.fire('canvas');
+
   requestAnimationFrame(this.draw.bind(this));
 }
 
@@ -108,8 +118,21 @@ class Universe {
     this[priv] = DEFAULTS;
 
     if (dimensions instanceof Vector) {
-      let self = this;
+      /**
+       * Dimensions of the canvas in the Universe
+       * 
+       * @summary Width and height
+       * @member Universe#private:dim
+       */
       this[priv].dim = dimensions;
+
+      /**
+       * Event manager that manages and fires events
+       * 
+       * @summary Event manager
+       * @member Universe#event
+       */
+      this.event = new EventManager(['canvas', 'draw']);
 
       readyBuffer.queue(addCanvas.bind(this, dimensions, appendTo));
     } else {
@@ -176,7 +199,7 @@ class Universe {
 
     if ((objIndex = this[priv].objects.indexOf(obj)) === -1 ||
       (beforeIndex = this[priv].objects.indexOf(before)) === -1) {
-      throw errors.inexistent();
+      throw errors.inexistent('GameObject', 'Universe');
     }
 
     this[priv].objects.splice(objIndex, 1);
@@ -187,6 +210,7 @@ class Universe {
    * Draws all objects onto the canvas. This function is called automatically and is controlled by `requestAnimationFrame`, so you do not have to try and call this function yourself.
    * 
    * @summary (Internal) Draws objects
+   * @fires Universe#draw
    */
   draw() {
     if (this.running) {
@@ -214,6 +238,32 @@ class Universe {
     }
 
     this[priv].lastTime = currTime;
+
+    /**
+     * Fired each frame after the canvas is fully drawn. The handler is passed the rendering context.
+     * 
+     * This code logs `drawn!` to the console each frame:
+     * 
+     * ```javascript
+     * let universe = new U2D.Universe();
+     * universe.event.on('draw', () => console.log('drawn!'));
+     * ```
+     * 
+     * This code adds a red rectangle to the top left of the canvas by drawing it each frame:
+     * 
+     * ```javascript
+     *let universe = new U2D.Universe();
+     * 
+     *universe.event.on('draw', ctx => {
+     *  ctx.fillStyle = 'red';
+     *  ctx.fillRect(0, 0, 10, 10);
+     *});
+     * ```
+     * 
+     * @summary Canvas drawn
+     * @event Universe#draw
+     */
+    this.event.fire('draw', this.ctx);
   }
 }
 

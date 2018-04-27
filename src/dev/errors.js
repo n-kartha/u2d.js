@@ -29,8 +29,13 @@ const errors = {
     return err;
   },
 
-  inexistent() {
-    let err = new Error(`The object specified does not exist in the current Universe.`);
+  /**
+   * Thrown when an inexistent member is passed as an argument
+   * @param {string} type Type of inexistent member
+   * @param {string} list List from which the member is missing
+   */
+  inexistent(type, list) {
+    let err = new Error(`The ${type} specified does not exist in the current ${list}.`);
     err.name = 'InexistentObjectError';
     return err;
   }

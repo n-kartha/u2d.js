@@ -108,7 +108,6 @@ class BufferExecutor {
      * @member BufferExecutor#continueExec
      */
     this.continueExec = true;
-    console.log(this);
 
     recurseExec(this, () => {
       /**
