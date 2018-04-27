@@ -43,7 +43,7 @@ class EventManager {
   on(e, handler) {
     if (this.eList.includes(e)) {
       if (typeof handler === "function") {
-        this.eHandlers.push(handler);
+        this.eHandlers[e].push(handler);
       } else {
         throw errors.invalidArguments(['string', 'function'], arguments);
       }
