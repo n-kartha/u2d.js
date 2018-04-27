@@ -13,10 +13,10 @@ class DummyGameObject extends GameObject {
     super(new Vector(10, 10));
   }
 
-  draw(ctx) {
-    let coords = this.getCoords();
+  draw(ctx, time) {
+    let coords = this.getCoords(time - this[priv].creation);
     ctx.fillStyle = 'white';
-    ctx.fillRect(coords.x, coords.y, 10, 10);
+    ctx.fillRect(coords.x, coords.y, 100, 100);
   }
 
   liesLeftOf(x) {
