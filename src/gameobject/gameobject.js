@@ -1,4 +1,5 @@
 import errors from '../dev/errors';
+import EventManager from '../dev/event-manager';
 import FLAGS from '../dev/flags';
 import Vector from '../util/vector';
 import {
@@ -7,10 +8,14 @@ import {
 
 /**
  * Default values that every GameObject starts with
+ * @private
  */
 const DEFAULTS = {
   /**
-   * Boolean values belonging to the `GameObject`
+   * Boolean values belonging to the `GameObject`. These currently include:
+   * 
+   * - canEscapeCanvas: Whether the object can escape the bounds of the canvas. Default: `true`
+   * - hidden: Whether the object is not drawn onto the canvas. Default: `false`
    * 
    * @summary Boolean flags
    * @member GameObject#private:flags
@@ -34,21 +39,25 @@ const DEFAULTS = {
   force: new Vector(0, 0),
 
   /**
-   * Mass of the object
+   * Mass of the object in `kg`
    * 
    * @summary Stored mass
    * @member GameObject#private:force
    */
-  mass: 100,
-
-  /**
-   * Time until which the force should last (in `ms`)
-   * 
-   * @summary Stop time for force
-   * @member GameObject#private:forceTime
-   */
-  forceTime: 0
+  mass: 100
 };
+
+/**
+ * Fires the hitEdge event and returns 0. Used in the `move` function of `GameObject`
+ * 
+ * @param {GameObject} obj
+ * @param {string} axis
+ * @private
+ */
+function fireEdgeEvent(obj, axis) {
+  obj.event.fire('hitEdge', axis);
+  return 0;
+}
 
 /**
  * `U2D.dev.GameObject`: Base class for all objects in the game. Inherit this class to define new types of objects to be drawn onto the canvas. Do not use directly.
@@ -66,6 +75,8 @@ class GameObject {
       this[priv] = DEFAULTS;
       this[priv].pos = pos;
       this[priv].creation = performance.now();
+
+      this.event = new EventManager(['draw', 'hitEdge']);
     } else {
       throw errors.invalidArguments(['Vector'], arguments);
     }
@@ -115,6 +126,47 @@ class GameObject {
   }
 
   /**
+   * Set a flag whether the gameobject can escape the canvas and leave its bounds
+   * 
+   * @summary Set whether the object can escape the canvas
+   * @param {boolean} bool Can escape the bounds of the canvas
+   */
+  canEscapeCanvas(bool) {
+    if (bool) {
+      this[priv].flags |= FLAGS.canEscapeCanvas;
+    } else {
+      this[priv].flags &= ~FLAGS.canEscapeCanvas;
+    }
+  }
+
+  /**
+   * Hide the object by setting the `hidden` flag to 0
+   * 
+   * @summary Hide self
+   */
+  hide() {
+    this[priv].flags &= ~FLAGS.hidden;
+  }
+
+  /**
+   * Show the object by setting the `hidden` flag to 1
+   * 
+   * @summary Show self
+   */
+  show() {
+    this[priv].flags |= FLAGS.hidden;
+  }
+
+  /**
+   * Returns whether the object is currently hidden (not drawn onto the canvas)
+   * 
+   * @summary Hidde self
+   */
+  hidden() {
+    return Boolean(this[priv].flags & FLAGS.hidden);
+  }
+
+  /**
    * Get or set velocity vector
    * 
    * @summary Get/set velocity
@@ -159,6 +211,8 @@ class GameObject {
    * Get or set the mass
    * 
    * @summary Get/set mass
+   * @param {number} [m] Mass to set to
+   * @returns {number|undefined} Current mass if `m` is not a number
    */
   mass(m) {
     if (typeof m === "number") {
@@ -263,8 +317,8 @@ class GameObject {
 
     if (!(this[priv].flags & FLAGS.canEscapeCanvas)) {
       velocity = new Vector(
-        this.liesRightOf(bounds.x) || this.liesLeftOf(bounds.x) ? 0 : velocity.x,
-        this.liesAbove(bounds.y) || this.liesBelow(bounds.y) ? 0 : velocity.y
+        this.liesRightOf(bounds.x) || this.liesLeftOf(bounds.x) ? fireEdgeEvent(this, 'x') : velocity.x,
+        this.liesAbove(bounds.y) || this.liesBelow(bounds.y) ? fireEdgeEvent(this, 'y') : velocity.y
       );
     }
 
