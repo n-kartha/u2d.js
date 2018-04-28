@@ -6,7 +6,7 @@
   "scripts": {
     "test": "qunit",
     "build": "webpack",
-    "doc": "jsdoc src -c jsdoc.config.json -t ./node_modules/foodoc/template -d doc -R README.md -r",
+    "doc": "jsdoc src -c jsdoc.config.json -d doc -R README.md -r",
     "build-tests": "webpack"
   },
   "repository": {
@@ -24,7 +24,5 @@
     "webpack": "^4.6.0",
     "webpack-cli": "^2.0.14"
   },
-  "dependencies": {
-    "foodoc": "0.0.8"
-  }
+  "dependencies": {}
 }
