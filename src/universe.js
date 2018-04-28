@@ -231,7 +231,7 @@ class Universe {
 
     for (let obj of this[priv].objects) {
       try {
-        obj.move(this[priv].dim, delta);
+        obj.move(this[priv].dim, delta, currTime);
         obj.draw(this.ctx, currTime);
       } catch (err) {
         console.log(err);
@@ -253,12 +253,12 @@ class Universe {
      * This code adds a red rectangle to the top left of the canvas by drawing it each frame:
      * 
      * ```javascript
-     *let universe = new U2D.Universe();
+     * let universe = new U2D.Universe();
      * 
-     *universe.event.on('draw', ctx => {
-     *  ctx.fillStyle = 'red';
-     *  ctx.fillRect(0, 0, 10, 10);
-     *});
+     * universe.event.on('draw', ctx => {
+     *   ctx.fillStyle = 'red';
+     *   ctx.fillRect(0, 0, 10, 10);
+     * });
      * ```
      * 
      * @summary Canvas drawn
