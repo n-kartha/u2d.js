@@ -6,7 +6,24 @@ const {
   runInThisContext
 } = require('vm');
 
-runInThisContext(readFileSync('u2d.min.js'));
+
+// Stuff to make the minified file run properly
+var document = {
+  createElement() {
+    return {
+      getContext() {
+        return {
+          fillRect() {}
+        }
+      }
+    }
+  },
+
+  addEventListener() {},
+  readyState: 'interactive'
+};
+
+runInThisContext(readFileSync('src/util/vector.js'));
 
 const Vector = U2D.Vector;
 const Universe = U2D.Universe;
