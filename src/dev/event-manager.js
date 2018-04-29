@@ -68,11 +68,12 @@ class EventManager {
    * 
    * @summary Fire event
    * @param {string} e Event name
+   * @param {object} self `this` value to pass to handlers
    * @param {object[]} args Arguments to be passed to the handler
    */
-  fire(e, ...args) {
+  fire(e, self, ...args) {
     for (let handler of this.eHandlers[e]) {
-      handler(...args);
+      handler.call(self, ...args);
     }
   }
 }

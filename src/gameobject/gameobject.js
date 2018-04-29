@@ -55,7 +55,7 @@ const DEFAULTS = {
  * @private
  */
 function fireEdgeEvent(obj, axis) {
-  obj.event.fire('hitEdge', axis);
+  obj.event.fire('hitEdge', obj, axis);
   return 0;
 }
 
@@ -200,10 +200,6 @@ class GameObject {
    * @returns {Vector} Vector representing the force acting on self
    */
   getForce(t) {
-    if (this[priv].forceTime !== -1 && performance.now() > this[priv].forceTime) {
-      this[priv].force = new Vector(0, 0);
-    }
-
     return this[priv].force.clone();
   }
 
@@ -309,8 +305,7 @@ class GameObject {
     let t = performance.now() - this[priv].creation;
 
     this[priv].velocity.add(
-      Vector.scale(this.getForce(t), 1 / this[priv].mass)
-      .scale(delta)
+      Vector.scale(this.getForce(t), delta / this[priv].mass)
     );
 
     let velocity = this.getVelocity(t);
