@@ -8,7 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Main",
-      "program": "${workspaceFolder}\\src\\main.js"
+      "program": "${workspaceFolder}\\src\\exports.js"
     },
     {
       "type": "node",
