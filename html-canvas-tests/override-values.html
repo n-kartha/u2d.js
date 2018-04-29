@@ -3,29 +3,11 @@
 <script src="dummy-gameobject.js"></script>
 <script>
   const Universe = U2D.Universe;
-  const p = U2D.priv;
 
   let u = new Universe(new Vector(800, 450));
-  let d1 = new DummyGameObject();
-  let d2 = new DummyGameObject();
-  let d3 = new DummyGameObject();
+  let d = new DummyGameObject();
 
-  let a = new Vector(10, 10);
-  let b = 5;
-
-  d2.x(200);
-  d3.x(300);
-
-  d2.y(300);
-  d3.y(200);
-
-  u.add(d1);
-  u.add(d2);
-  u.add(d3);
-
-  d2.canEscapeCanvas(true);
-
-  d1.getCoords = (t) => new Vector(100, 200 + 100 * Math.cos(t / 500));
-  d2.getVelocity = (t) => new Vector(0, -Math.sin(t / 500) * 3.2);
+  u.add(d);
+  d.getCoords = (t) => new Vector(100, 200 + 100 * Math.cos(t / 500));
 
 </script>
