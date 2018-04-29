@@ -224,7 +224,7 @@ class Universe {
     }
 
     let currTime = performance.now();
-    let delta = (currTime - this[priv].lastTime) * this[priv].fps / 1000;
+    let delta = (currTime - this[priv].lastFrame) * this[priv].fps / 1000;
 
     this.ctx.fillStyle = 'black';
     this.ctx.fillRect(0, 0, this[priv].dim.x, this[priv].dim.y);
@@ -238,7 +238,7 @@ class Universe {
       }
     }
 
-    this[priv].lastTime = currTime;
+    this[priv].lastFrame = currTime;
 
     /**
      * Fired each frame after the canvas is fully drawn. The handler is passed the rendering context.
@@ -264,7 +264,7 @@ class Universe {
      * @summary Canvas drawn
      * @event Universe#draw
      */
-    this.event.fire('draw', this.ctx);
+    this.event.fire('draw', this, this.ctx);
   }
 }
 
