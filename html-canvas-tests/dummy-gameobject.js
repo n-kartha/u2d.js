@@ -17,6 +17,16 @@ class DummyGameObject extends GameObject {
     let coords = this.getCoords(time - this[priv].creation);
     ctx.fillStyle = 'white';
     ctx.fillRect(coords.x, coords.y, 100, 100);
+
+    if (Number.isNaN(coords.x)) {
+      console.log('x is NaN');
+    }
+
+    if (Number.isNaN(coords.y)) {
+      console.log('y is NaN');
+    }
+
+    this.event.fire('draw', this, ctx);
   }
 
   liesLeftOf(x) {
