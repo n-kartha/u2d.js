@@ -8,29 +8,39 @@ Here are the ground rules:
 ## Style guide
 The style guide here is really simple. I recommend [Visual Studio Code](https://code.visualstudio.com) with the [Beautify](https://github.com/HookyQR/VSCodeBeautify) extension.
 
-Set the indentation to `Spaces: 2` and make sure that the `.jsbeautifyrc` file is in your workspace root. It should automatically format your code to fit with our style. For convenience, make sure that these 2 lines are present in your User Settings (`Ctrl` + `,`).
-
-```json
-  "editor.formatOnSave": true,
-  "editor.tabSize": 2,
-```
+If you have installed both VSCode and the Beautify extension, the extension should automatically format your code whenever you save.
 
 ### Other rules
 Installing Beautify will format your code to make it look prettier. Since we need to maintain consistency in other stuff as well, follow these rules:
 
+1. Use `let` instead of `var`.
+1. Use single quotes for strings and [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) if need to.
+1. Use getter and setter functions unless the current class is a data structure or a development utility.
+1. Use `class` instead of `function` constructors.
 1. `import` statements should be mentioned at the top of each file.
-1. `export`s should be mentioned at the bottom of each file.
-1. Do not invent your own error messages. Use existing ones in `src/errors.js`, or create new ones if you don't find them useful.
-1. Write meaningful commit messages. Don't leave it blank. If you've fixed a bug, give a reference to the issue that you fixed. If you're adding a new feature, write down a brief description.
+1. `export`s should be mentioned at the bottom of each file. Alwas use `export default` unless you're in `src/exports.js`. If you find a need to create two `export`s in one file, you probably could split it into two separate files.
+1. Do not invent your own error messages. Use existing ones in `src/dev/errors.js`, or create new ones if you don't find them useful.
+1. Write meaningful commit messages. Don't leave it blank. If you've fixed a bug, give a reference to the issue that you fixed. If you're adding a new feature, write down a brief description. In other words,
+    - this is good: `Add gravity controls for GameObject`
+    - this is bad: `Do stuff`
 1. Use JSDoc to document every single thing that you're adding. What you intended for a function or variable need not be what everyone else understands.
-  - As an added bonus, the JSDoc comments can directly be used for the wiki. 
-  - If you're not performing type checking (for instance in a function that will be used a lot), mention it in the documentation.
+    - As an added bonus, the JSDoc comments can directly be used for the documentation.
+    - If you're not performing type checking (for instance in a function that will be used a lot), mention it in the documentation.
 
 By the way, here's an example for a JSDoc comment:
 
 ```javascript
 /**
- * Adds 2 numbers
+ * Adds 2 numbers, `a` and `b`, and returns the sum.
+ * 
+ * Usage:
+ * ```javascript
+ * let a = 10;
+ * let b = 15;
+ * let sum = add(a, b); // 25
+ * ```
+ * 
+ * @summary Adds 2 numbers
  * @param {number} a First number
  * @param {number} b Second number
  * @returns {number} Sum of a and b
@@ -42,8 +52,6 @@ function add(a, b) {
 
 ### Additional styles
 Use [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) if required and use single quotes for strings.
-
-Use getter and setter functions for classes that are not designed to hold data. For instance, in the `GameObject` class, the major functionality is movement physics, and not storing values, and so we give it getter and setter functions. However, the `Vector` class is a data structure designed to hold a 2D vector (which is just 2 numbers), and so we allow the values to be freely accessed without getters and setters.
 
 ## Branches
 Currently, we have 3 branches:
