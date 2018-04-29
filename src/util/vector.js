@@ -1,5 +1,3 @@
-import errors from '../dev/errors';
-
 /**
  * `U2D.Vector`: Holds 2-dimensional vectors. **No type-checking is done, so that the library performs better.**
  * 
@@ -157,6 +155,10 @@ class Vector {
    */
   static equals(a, b) {
     return a.x === b.x && a.y === b.y;
+  }
+
+  toString() {
+    return `[${this.x} ${this.y}]`;
   }
 }
 
