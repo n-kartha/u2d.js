@@ -157,8 +157,24 @@ class Vector {
     return a.x === b.x && a.y === b.y;
   }
 
+  /**
+   * Returns strigified version of self in a matrix-like format
+   * 
+   * @summary Stringify self
+   * @returns {string} Stringified version of self
+   */
   toString() {
     return `[${this.x} ${this.y}]`;
+  }
+
+  /**
+   * Returns self as an array of 2 values
+   * 
+   * @summary Convert self to array
+   * @returns {number[]} [self.x, self.y]
+   */
+  destruct() {
+    return [this.x, this.y];
   }
 }
 

@@ -22,10 +22,7 @@ function addCanvas(dimensions, appendTo) {
    */
   this[priv].canvas = document.createElement('canvas');
 
-  Object.assign(this[priv].canvas, {
-    width: dimensions.x,
-    height: dimensions.y
-  });
+  [this[priv].canvas.width, this[priv].canvas.height] = dimensions.destruct();
 
   /**
    * HTML5 2D rendering context belonging to {@link Universe#canvas|`this.canvas`}
@@ -227,7 +224,7 @@ class Universe {
     let delta = (currTime - this[priv].lastFrame) * this[priv].fps / 1000;
 
     this.ctx.fillStyle = 'black';
-    this.ctx.fillRect(0, 0, this[priv].dim.x, this[priv].dim.y);
+    this.ctx.fillRect(0, 0, ...this[priv].dim.destruct());
 
     for (let obj of this[priv].objects) {
       try {
