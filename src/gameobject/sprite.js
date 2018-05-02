@@ -159,6 +159,12 @@ class Sprite extends GameObject {
        */
       this[priv].cache = getCachedFrames(fDim, fStart, fEnd, startAt, padding, cols);
 
+      /**
+       * Time at which the frame last updated. When the current time minus this value is greater than or equal to {@link Sprite#private:updateTime|updateTime}, the frame is incremented
+       * 
+       * @summary Last frame update timestamp
+       * @member Sprite#private:prevUpdateFrame
+       */
       this[priv].prevUpdateFrame = performance.now();
     } else {
       throw errors.invalidArguments(['Vector', 'Image', '[object]'], arguments);
@@ -169,11 +175,16 @@ class Sprite extends GameObject {
    * (Internal) Draws the sprite onto the canvas, updating the frame
    * 
    * @summary Draw and update self
+   * @param {CanvasRenderingContext2D} ctx Canvas context onto which to draw
+   * @param {number} time Current timestamp
    * @override
    */
   draw(ctx, time) {
-    if ((time - this[priv].creation)) {
+    if (time - this[priv].prevUpdateFrame >= this[priv].updateTime) {
       this[priv].currFrame = (this[priv].currFrame + 1) % this[priv].cache.length;
+      this[priv].prevUpdateFrame += this[priv].updateTime;
     }
+
+    ctx.drawImage(this[priv].image, ...this[priv].cache[this[priv].currFrame].destruct(), ...this[priv].dim.destruct());
   }
 }
