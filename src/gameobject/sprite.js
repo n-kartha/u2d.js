@@ -17,6 +17,64 @@ import {
  * @property {Vector} [startAt] Co-ordinates in spritesheet to start drawing at. This overrides `startFrame`
  */
 
+
+/**
+ * Returns sprite values to be destructured and stored in variables
+ * 
+ * @param {Image} sprite
+ * @param {SpriteSettings} spriteSetttings
+ * @private
+ */
+function getSpriteValues(sprite, spriteSettings) {
+  return {
+    fDim: spriteSettings.dimensions || new Vector(sprite.width, sprite.height),
+
+    padding: spriteSettings.padding || 0,
+
+    rows: Math.floor((sprite.height - this.padding) / (this.fDim.y + this.padding)),
+    cols: Math.floor((sprite.width - this.padding) / (this.fDim.x + this.padding)),
+
+    fStart: spriteSettings.startFrame || 0,
+    fEnd: this.rows * this.cols - 1,
+
+    fps: spriteSettings.fps || 0,
+
+    startAt: new Vector(0, 0)
+  };
+}
+
+/**
+ * Get cached frame starting positions
+ * @param {Vector} fDim
+ * @param {number} fStart
+ * @param {number} fEnd
+ * @param {Vector} startAt
+ * @param {number} padding
+ * @param {number} cols
+ * @private
+ */
+function getCachedFrames(fDim, fStart, fEnd, startAt, padding, cols) {
+  let row = -1;
+  let col = 0;
+  let cache = [];
+
+  // cache all frames
+  for (let frame = fStart; frame <= fEnd; frame++) {
+    if (col % cols === 0) {
+      row++;
+      col = 0;
+    }
+
+    cache.push(
+      new Vector(startAt.x + col * (fDim.x + padding) + padding, row * (fDim.y + padding) + padding)
+    );
+
+    col++;
+  }
+
+  return cache;
+}
+
 /**
  * `U2D.Sprite`: Spritesheet-based `GameObject` that auto-updates with each frame
  * 
@@ -36,15 +94,16 @@ class Sprite extends GameObject {
       super(pos);
 
       // defaults (static image)
-      let fDim = new Vector(sprite.width, sprite.height);
-      let padding = 0;
-      let fStart = 0;
-      let fEnd = 0;
-      let startAt = new Vector(0, 0);
-      let fps = 0;
-      let rows = 1;
-      let cols = 1;
-      let cache = [];
+      let {
+        fDim,
+        fStart,
+        fEnd,
+        padding,
+        fps,
+        rows,
+        cols,
+        startAt
+      } = getSpriteValues(sprite, spriteSettings);
 
       /**
        * Frame (starting at `startFrame` and ending at `endFrame`) which is being drawn right now
@@ -84,50 +143,37 @@ class Sprite extends GameObject {
        */
       this[priv].dim = resizeDimensions || fDim;
 
-      if (spriteSettings) {
-        if (spritesettings.dimensions instanceof Vector &&
-          typeof spriteSettings.fps === 'number') {
+      /**
+       * Amount of time (in ms) after which the frame should be updated. This is used in the {@link Sprite#draw|draw function}.
+       * 
+       * @summary Time to wait before incrementing frame
+       * @member Sprite#private:updateTime
+       */
+      this[priv].updateTime = 1000 / fps;
 
-          fDim = spriteSettings.dimensions;
-          fps = spriteSettings.fps;
-          padding = spriteSettings.padding || 0;
-          cols = Math.floor((sprite.width - padding) / (fDim.x + padding));
-          rows = Math.floor((sprite.height - padding) / (fDim.y + padding));
-          fStart = spriteSettings.startFrame || 0;
-          fEnd = spriteSettings.endFrame || rows * cols - fStart;
-          startAt = spriteSettings.starAt || startAt;
+      /**
+       * Array of starting points of frames in the spritesheet to draw the sprite from, cached for better performance per frame
+       * 
+       * @summary Cached frame starting positions
+       * @member {Vector[]} Sprite#private:cache
+       */
+      this[priv].cache = getCachedFrames(fDim, fStart, fEnd, startAt, padding, cols);
 
-        } else {
-          throw errors.invalidObject('spriteSettings', '{ dimensions, fps [, padding] [, startFrame] [, endFrame] }', spriteSettings);
-        }
-      }
-
-      let row = -1;
-      let col = 0;
-
-      // cache all frames
-      for (let frame = fStart; frame <= fEnd; frame++) {
-        if (frame % rows === 0) {
-          row++;
-          col = 0;
-        }
-
-        this[priv].cache.push(
-          new Vector(startAt.x + col * (fDim.x + padding) + padding, row * (fDim.y + padding) + padding)
-        );
-      }
+      this[priv].prevUpdateFrame = performance.now();
     } else {
       throw errors.invalidArguments(['Vector', 'Image', '[object]'], arguments);
     }
   }
 
   /**
-   * Called automatically, so you should not call it yourself.
+   * (Internal) Draws the sprite onto the canvas, updating the frame
    * 
-   * @summary Updates the sprite
-   * @param {number} time Current timestamp in `ms`
+   * @summary Draw and update self
+   * @override
    */
-  update(time) {
-
+  draw(ctx, time) {
+    if ((time - this[priv].creation)) {
+      this[priv].currFrame = (this[priv].currFrame + 1) % this[priv].cache.length;
+    }
   }
 }
