@@ -14,6 +14,7 @@ import {
  * @property {number} [padding=0] Padding between frames
  * @property {number} [startFrame=0] Frame to start at
  * @property {number} [endFrame] Frame to end at
+ * @property {Vector} [startAt] Co-ordinates in spritesheet to start drawing at. This overrides `startFrame`
  */
 
 /**
@@ -33,46 +34,87 @@ class Sprite extends GameObject {
   constructor(pos, resizeDimensions = null, sprite, spriteSettings) {
     if (pos instanceof Vector && sprite instanceof Image) {
       super(pos);
+
+      // defaults (static image)
+      let fDim = new Vector(sprite.width, sprite.height);
+      let padding = 0;
+      let fStart = 0;
+      let fEnd = 0;
+      let startAt = new Vector(0, 0);
+      let fps = 0;
+      let rows = 1;
+      let cols = 1;
+      let cache = [];
+
+      /**
+       * Frame (starting at `startFrame` and ending at `endFrame`) which is being drawn right now
+       * 
+       * @summary Current frame
+       * @member {number} Sprite#private:currFrame
+       */
+      this[priv].currFrame = 0;
+
+      /**
+       * HTML5 Image drawn onto the canvas when the sprite is drawn. This is constructed using the `Image` constructor, like this:
+       * 
+       * ```javascript
+       * let img = new Image();
+       * ```
+       * 
+       * @summary HTML5 Image
+       * @member {Image} Sprite#private:image
+       */
       this[priv].image = sprite;
 
-      this[priv].dim = resizeDimensions || new Vector(sprite.width, sprite.height);
+      /**
+       * Spritesheet configuration associated with this sprite
+       * 
+       * @summary Spritesheet settings
+       * @member {object} Sprite#private:spriteSettings
+       * @default {}
+       */
+      this[priv].spriteSettings = spriteSettings || {};
+
+      /**
+       * Dimensions to which the sprite is resized each time it is drawn
+       * 
+       * @summary Resize dimensions
+       * @member {Vector} Sprite#private:dim
+       * @default Dimensions of {@link Sprite#private:image|this sprite's `Image`}
+       */
+      this[priv].dim = resizeDimensions || fDim;
 
       if (spriteSettings) {
         if (spritesettings.dimensions instanceof Vector &&
           typeof spriteSettings.fps === 'number') {
 
-          this[priv].frameDim = spriteSettings.dimensions;
-          this[priv].fps = spriteSettings.fps;
+          fDim = spriteSettings.dimensions;
+          fps = spriteSettings.fps;
+          padding = spriteSettings.padding || 0;
+          cols = Math.floor((sprite.width - padding) / (fDim.x + padding));
+          rows = Math.floor((sprite.height - padding) / (fDim.y + padding));
+          fStart = spriteSettings.startFrame || 0;
+          fEnd = spriteSettings.endFrame || rows * cols - fStart;
+          startAt = spriteSettings.starAt || startAt;
 
-          /**
-           * Padding between each sprite in the spritesheet
-           * 
-           * @summary Sprite image padding
-           * @member {number} Sprite#private:padding
-           */
-
-          /**
-           * Frame in the spritesheet to start at
-           * 
-           * @summary Starting frame
-           * @member {number} Sprite#private:startFrame
-           */
-
-          /**
-           * Frame in the spritesheet to stop at
-           * 
-           * @summary Ending frame
-           * @member {number} Sprite#private:endFrame
-           */
-
-          let props = ['padding', 'startFrame', 'endFrame'];
-
-          for (let prop of Object.keys(props)) {
-            if (typeof spriteSettings[prop] === 'number') {
-              this[priv][prop] = spriteSettings[prop];
-            }
-          }
+        } else {
+          throw errors.invalidObject('spriteSettings', '{ dimensions, fps [, padding] [, startFrame] [, endFrame] }', spriteSettings);
         }
+      }
+
+      let row = -1;
+      let col = 0;
+
+      // cache all frames
+      for (let frame = fStart; frame <= fEnd; frame++) {
+        if (frame % rows === 0) {
+          row++;
+          col = 0;
+        }
+
+        this[priv].cache.push(
+          new Vector(startAt.x + col * (fDim.x + padding) + padding, row * (fDim.y + padding) + padding)
+        );
       }
     } else {
       throw errors.invalidArguments(['Vector', 'Image', '[object]'], arguments);
